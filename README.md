@@ -3,9 +3,13 @@ PEP - Pao Er Ping (Wu), a Chinese chess server side utilities
 
 ## Purpose
 Basic search: Minimax, A*
+
 Vision - chess board recognization
+
 H function Theta parameters generated: with Neural network or ...
+
 Pattern recognization
+
 Self  learning
 
 
