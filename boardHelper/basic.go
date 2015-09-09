@@ -1,4 +1,4 @@
-package pep
+package boardHelper
 
 import (
 	"regexp"
@@ -19,7 +19,7 @@ const (
 	ROOK      = 80
 	GENERAL   = 126
 	RIVER     = 5
-	RP_MARGIN = 2
+	RP_MARGIN = 2 //RP_MARGIN: River to Palace's margin
 	COLOR     = 128
 )
 
@@ -55,6 +55,23 @@ var pieceStr = map[string]string{
 	"126": "G",
 	"35":  "C",
 	"15":  "S",
+}
+
+var pieceScore = map[string]int{
+    "r": -ROOK,
+    "h": -HORSE,
+    "e": -ELEPHANT,
+    "a": -ADVISOR,
+    "g": -GENERAL * 1000,
+    "c": -CANNON,
+    "s": -SOLDIER,
+    "R": ROOK,
+    "H": HORSE,
+    "E": ELEPHANT,
+    "A": ADVISOR,
+    "G": GENERAL * 1000,
+    "C": CANNON,
+    "S": SOLDIER,
 }
 
 func InitFullBoard() [13][12]int { // https://groups.google.com/forum/#!topic/golang-nuts/sPYRl4RHFdU
@@ -203,3 +220,18 @@ func Fen2Board(fen string) [13][12]int {
 
     return board
 }
+
+func BoardPiecesScore(board [13][12]int) int {
+    score := 0;
+    // Function same as piecesScore, this is for efficiency consideration
+    for row := 1; row <= ROW_HEIGHT; row++ {
+        for column := 1; column <= ROW_WIDTH; column++{
+            piece := board[row][column];
+            if piece > 0 {
+                score = score + pieceScore[pieceStr[strconv.Itoa(piece)]];
+            }
+        }
+    }
+    return score;
+}
+

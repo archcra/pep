@@ -1,6 +1,6 @@
 // First part, test initBoard func
 
-package pep
+package boardHelper
 
 import (
 	"testing"
@@ -93,8 +93,6 @@ func TestValidFen(t *testing.T) {
 				t.Errorf("Fen string (%s) , should be %b", c.in, c.want)
 			}
 		}
-    
-    
 }
 
 
@@ -151,5 +149,23 @@ cases2 := []struct {
 				t.Errorf("Fen string (%s) got board position %s should be %d but is %d!", c.in, c.want.pos, c.want.value, got[row][col])
 			
 		}
+    }
+}
+
+func TestBoardPiecesScore(t *testing.T) {
+	cases := []struct {
+		in string 
+        want int
+	}{
+		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", 0},
+        {"1heagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", 80},
+        {"r8/9/9/9/9/9/9/9/9/H8", -50},
+	}
+
+	for _, c := range cases {
+        got := BoardPiecesScore(Fen2Board(c.in))
+        if got != c.want {
+            t.Errorf("Score of fen (%s) , should be %d, but got %d.", c.in, c.want, got)
+        }
     }
 }
