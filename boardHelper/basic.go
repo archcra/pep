@@ -39,21 +39,21 @@ var pieceValue = map[string]int{
 	"S": SOLDIER,
 }
 
-var pieceStr = map[string]string{
-	"208": "r",
-	"158": "h",
-	"140": "e",
-	"139": "a",
-	"254": "g",
-	"163": "c",
-	"143": "s",
-	"80":  "R",
-	"30":  "H",
-	"12":  "E",
-	"11":  "A",
-	"126": "G",
-	"35":  "C",
-	"15":  "S",
+var pieceStr = map[int]string{
+	208:   "r",
+	158:   "h",
+	140:   "e",
+	139:   "a",
+	254:   "g",
+	163:   "c",
+	143:   "s",
+	80:    "R",
+	HORSE: "H",
+	12:    "E",
+	11:    "A",
+	126:   "G",
+	35:    "C",
+	15:    "S",
 }
 
 var pieceScore = map[string]int{
@@ -222,7 +222,7 @@ func BoardPiecesScore(board [13][12]int) int {
 		for column := 1; column <= BOARD_COLUMNS; column++ {
 			piece := board[row][column]
 			if piece > 0 {
-				score = score + pieceScore[pieceStr[strconv.Itoa(piece)]]
+				score = score + pieceScore[pieceStr[piece]]
 			}
 		}
 	}
