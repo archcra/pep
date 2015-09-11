@@ -2,14 +2,13 @@ package boardHelper
 
 import (
 	"regexp"
-    "strings"
-    "strconv"
-    //"fmt"
+	"strconv"
+	"strings"
 )
 
 const (
-	ROW_WIDTH  = 9
-	ROW_HEIGHT = 10
+	BOARD_COLUMNS = 9
+	BOARD_ROWS    = 10
 
 	ADVISOR   = 11
 	ELEPHANT  = 12
@@ -58,20 +57,20 @@ var pieceStr = map[string]string{
 }
 
 var pieceScore = map[string]int{
-    "r": -ROOK,
-    "h": -HORSE,
-    "e": -ELEPHANT,
-    "a": -ADVISOR,
-    "g": -GENERAL * 1000,
-    "c": -CANNON,
-    "s": -SOLDIER,
-    "R": ROOK,
-    "H": HORSE,
-    "E": ELEPHANT,
-    "A": ADVISOR,
-    "G": GENERAL * 1000,
-    "C": CANNON,
-    "S": SOLDIER,
+	"r": -ROOK,
+	"h": -HORSE,
+	"e": -ELEPHANT,
+	"a": -ADVISOR,
+	"g": -GENERAL * 1000,
+	"c": -CANNON,
+	"s": -SOLDIER,
+	"R": ROOK,
+	"H": HORSE,
+	"E": ELEPHANT,
+	"A": ADVISOR,
+	"G": GENERAL * 1000,
+	"C": CANNON,
+	"S": SOLDIER,
 }
 
 func InitFullBoard() [13][12]int { // https://groups.google.com/forum/#!topic/golang-nuts/sPYRl4RHFdU
@@ -143,95 +142,89 @@ func pieceCodeToFen(piece int) string {
 	return "?" // This should not happen.
 }
 
-
 // TODO: this whole function could probably be replaced with a single regex
-func validFen(fen string ) bool {
+func validFen(fen string) bool {
 
-    // cut off any move, castling, etc info from the end
-    // we're only interested in position information
-    r := regexp.MustCompile(" .+$")
+	// cut off any move, castling, etc info from the end
+	// we're only interested in position information
+	r := regexp.MustCompile(" .+$")
 	fen = r.ReplaceAllString(fen, "")
-    // FEN should be 8 sections separated by slashes
-    chunks := strings.Split(fen, "/")
-    // fmt.Println("Now chunks is:",len(chunks))
+	// FEN should be 8 sections separated by slashes
+	chunks := strings.Split(fen, "/")
+	// fmt.Println("Now chunks is:",len(chunks))
 
-    
-    if len(chunks) != ROW_HEIGHT{
-        return false
-    }
+	if len(chunks) != BOARD_ROWS {
+		return false
+	}
 
-    // check the piece sections
-    for i := 0; i < ROW_HEIGHT; i++ {
-        if chunks[i] == "" ||
-            len(chunks[i]) > ROW_WIDTH {
-            return false
-        }
-        match, _ := regexp.MatchString("[^rheagcsRHEAGCS1-9]", chunks[i])
-        if match{
-            return false   
-        }
-    }
-    return true
+	// check the piece sections
+	for i := 0; i < BOARD_ROWS; i++ {
+		if chunks[i] == "" ||
+			len(chunks[i]) > BOARD_COLUMNS {
+			return false
+		}
+		match, _ := regexp.MatchString("[^rheagcsRHEAGCS1-9]", chunks[i])
+		if match {
+			return false
+		}
+	}
+	return true
 }
 
 // convert FEN string to Board object
 // returns nil if the FEN string is invalid
 func Fen2Board(fen string) [13][12]int {
-    var board [13][12]int
-    
-    // Init to all -1, magic number TODO
-    for i:=0; i< 13; i++ {
-        for j:=0; j< 12; j++ {
-            board[i][j]=-1
-        }
-    }
-    
-    if !validFen(fen) {
-        return board
-    }
+	var board [13][12]int
 
-    rows := strings.Split(fen, "/")
+	// Init to all -1, magic number TODO
+	for i := 0; i < 13; i++ {
+		for j := 0; j < 12; j++ {
+			board[i][j] = -1
+		}
+	}
 
-   // var position = {};
+	if !validFen(fen) {
+		return board
+	}
 
-    //var currentRow = ROW_HEIGHT;
-    for  i := 0; i < ROW_HEIGHT; i++ {
-        row := strings.Split(rows[i],"")
+	rows := strings.Split(fen, "/")
 
-        // loop through each character in the FEN section
-        //emptySquares := 0
-            columnIndex := 0
-        for j := 0; j < len(row); j++ {
-            // number / empty squares
-            match, _ := regexp.MatchString("[1-9]", row[j])
-        if match{
-            
-            emptySquares, _  := strconv.Atoi(row[j])
-            for k := 0; k < emptySquares; k++ {
-                    board[i + 1][columnIndex + 1] = 0
-                    columnIndex = columnIndex + 1
-                }
-        }else {// piece
-                board[i + 1][columnIndex + 1] = pieceValue[row[j]]
-                columnIndex = columnIndex + 1
-            }
-        }
-    }
+	for i := 0; i < BOARD_ROWS; i++ {
+		row := strings.Split(rows[i], "")
 
-    return board
+		// loop through each character in the FEN section
+		//emptySquares := 0
+		columnIndex := 0
+		for j := 0; j < len(row); j++ {
+			// number / empty squares
+			match, _ := regexp.MatchString("[1-9]", row[j])
+			if match {
+
+				emptySquares, _ := strconv.Atoi(row[j])
+				for k := 0; k < emptySquares; k++ {
+					board[i+1][columnIndex+1] = 0
+					columnIndex = columnIndex + 1
+				}
+			} else { // piece
+				board[i+1][columnIndex+1] = pieceValue[row[j]]
+				columnIndex = columnIndex + 1
+			}
+		}
+	}
+
+	return board
 }
 
 func BoardPiecesScore(board [13][12]int) int {
-    score := 0;
-    // Function same as piecesScore, this is for efficiency consideration
-    for row := 1; row <= ROW_HEIGHT; row++ {
-        for column := 1; column <= ROW_WIDTH; column++{
-            piece := board[row][column];
-            if piece > 0 {
-                score = score + pieceScore[pieceStr[strconv.Itoa(piece)]];
-            }
-        }
-    }
-    return score;
+	score := 0
+	// Function same as piecesScore, this is for efficiency consideration
+	for row := 1; row <= BOARD_ROWS; row++ {
+		for column := 1; column <= BOARD_COLUMNS; column++ {
+			piece := board[row][column]
+			if piece > 0 {
+				score = score + pieceScore[pieceStr[strconv.Itoa(piece)]]
+			}
+		}
+	}
+	return score
 }
-
