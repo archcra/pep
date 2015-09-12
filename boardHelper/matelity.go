@@ -18,17 +18,8 @@ var matablePiece = map[string]int{
 
 func countMateScore(board [13][12]int) int {
 	// Calculate both side, BLACK as negative
-	var redGeneralPos, blackGeneralPos Pos
-	for i := 1; i <= 3; i++ {
-		for j := 4; j <= 6; j++ {
-			if board[i][j] == 254 {
-				blackGeneralPos = Pos{i, j}
-			}
-			if board[i+7][j] == 126 {
-				redGeneralPos = Pos{i + 7, j}
-			}
-		}
-	}
+	redGeneralPos := GetGeneralPos(board, RED)
+	blackGeneralPos := GetGeneralPos(board, BLACK)
 
 	/* TODO
 	if blackGeneralPos == nil || redGeneralPos == nil {

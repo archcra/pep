@@ -16,8 +16,8 @@ func TestEvaluate(t *testing.T) {
 		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C3C3/9/RHEAGAEHR", -10},
 		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C2C4/9/RHEAGAEHR", 28},
 		{"rheagaehr/9/1c2c4/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -28},
-		{"rheaSaehr/9/1c2c4/s1s1s1s1s/9/9/S1S3S1S/1C5C1/9/RHEAGAEHR", 125951},
-		{"rheagaehr/9/1c2c4/s1s3s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAsAEHR", -125997},
+		{"rheaSaehr/9/1c2c4/s1s1s1s1s/9/9/S1S3S1S/1C5C1/9/RHEAGAEHR", 125972},
+		{"rheagaehr/9/1c2c4/s1s3s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAsAEHR", -126018},
 	}
 
 	for _, c := range cases {

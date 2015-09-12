@@ -17,6 +17,8 @@ func TestGenerateMoves(t *testing.T) {
 		{"1heagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -1, "3:8-3:5"},
 		{"4g4/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/4C4/9/RHEAGAEHR", 1, "8:5-4:5"},
 		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -1, "3:2-10:2"},
+		{"9/4g4/9/9/9/9/9/9/9/4G4", 1, "10:5-2:5"},
+		{"4g4/4S4/9/9/9/9/9/9/9/4G4", -1, "1:5-2:5"},
 	}
 
 	for _, c := range cases {

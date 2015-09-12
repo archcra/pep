@@ -67,7 +67,7 @@ func BenchmarkInitBoard(b *testing.B) {
 func TestBoard2Fen(t *testing.T) {
 	got := InitFullBoard()
 	wantFen := "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR"
-	fen := board2Fen(got)
+	fen := Board2Fen(got)
 	if fen != wantFen {
 		t.Errorf("Fen of full board should be: %s but is: %s.", wantFen, fen)
 	}

@@ -1,6 +1,10 @@
 package minimax
 
-import "github.com/archcra/pep/boardHelper"
+import (
+	"fmt"
+
+	"github.com/archcra/pep/boardHelper"
+)
 
 type TreeNode struct {
 	Parent     *TreeNode //走到这个局面的上一局面
@@ -17,7 +21,7 @@ const (
 func expandNode(node TreeNode, nextRoundColor int) []TreeNode {
 	/*
 	   A node is as this:
-	   {move:"10:9-9:9", board:[...], nextMove:RED}
+	   {move:"10:9-9:9", board:[...], RoundColor:RED}
 	*/
 	var treeNodes []TreeNode
 	var newNode TreeNode
@@ -47,7 +51,7 @@ func Minimax(board [13][12]int, depthLimit int, roundColor int) *TreeNode {
 
 	treeNode := TreeNode{
 		nil,
-		"",
+		"ROOT",
 		board,
 		-10000,
 		roundColor,
@@ -65,6 +69,7 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	for _, node := range nodes {
 		// 如果此展开的节点已吃了对方老帅，则直接返回
 		if boardHelper.GeneralBeTaken(node.Board, node.RoundColor) {
+			fmt.Printf("Now taken")
 			return &node
 		}
 
@@ -81,39 +86,44 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	maxScore := -SCORE_WIN_LIMIT
 
 	for _, node := range minNodes {
-		score := boardHelper.Evaluate(node.Board) * roundColor
-		if score > maxScore {
+		//fmt.Printf("\n++for each max, min score is: %d with move %s\n", node.Score, node.Parent.Move)
+		if node.Score > maxScore {
 			maxNode = node
-			maxScore = score
+			maxScore = node.Score
 		}
 	}
+	//fmt.Printf("\n\n\n ____MaxScore is %d and MaxNode Parent Move is %s.\n", maxScore, maxNode.Parent.Move)
 
 	// 如果没有可展开结点，即被完全憋死了（如3aga3/3ShS3/4S4/9/9/9/9/9/9/4G4，如轮到黑，则完全没有可走之步)
 	//另一局，7子： (9/3ShS3/3aga3/9/9/9/9/9/9/3G5) // TODO
-	return &maxNode
+	//maxNode.Parent.Score = maxNode.Score
+	if depth == depthLimit {
+		return &maxNode
+	} else {
+		//fmt.Printf("\n\n\nSHOULD RETURN HERE ....%s and %s and %d and maxScore is %d\n\n", maxNode.Move, maxNode.Parent.Move, maxNode.Score, maxScore)
+		return maxNode.Parent
+	}
+
 }
 
 func min(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode {
-	//fmt.Printf("=====\nIn min with depth:%d; depthLimit:%d; roundColor: %d ======\n", depth, depthLimit, roundColor)
 
 	var maxNodes []TreeNode
 	var minNode TreeNode
 
 	for _, node := range nodes {
-		// 如果此展开的节点已吃了对方老帅，则直接返回
+		// 如果此展开的节点自己老帅被吃了，则直接返回最小值
 		if boardHelper.GeneralBeTaken(node.Board, node.RoundColor) {
+			node.Score = -SCORE_WIN_LIMIT
 			return &node
 		}
 
 		if depth == depthLimit {
 			node.Score = boardHelper.Evaluate(node.Board) * roundColor
-
+			//fmt.Printf("======min node score is %d and board fen is %s=====", node.Score, boardHelper.Board2Fen(node.Board))
 			maxNodes = append(maxNodes, node)
-
 		} else {
-
 			maxNodes = append(maxNodes, *max(expandNode(node, roundColor), depth+1, depthLimit, roundColor))
-
 		}
 	}
 
@@ -128,6 +138,12 @@ func min(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	}
 
 	//fmt.Printf("minNode is %q with score: %d.", minNode, minScore)
+	//	minNode.Parent.Score = minNode.Score
+	//fmt.Printf("min node move is %s and score is %d.", minNode.Move, minNode.Score)
 
-	return &minNode
+	if depth == depthLimit {
+		return &minNode
+	} else {
+		return minNode.Parent
+	}
 }

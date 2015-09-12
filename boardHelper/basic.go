@@ -21,6 +21,9 @@ const (
 	RP_MARGIN = 2 //RP_MARGIN: River to Palace's margin
 	COLOR     = 128
 	LIMBO     = 128
+
+	RED   = 1
+	BLACK = -1
 )
 
 var pieceValue = map[string]int{
@@ -93,7 +96,7 @@ func InitFullBoard() [13][12]int { // https://groups.google.com/forum/#!topic/go
 
 // board object to FEN string
 // returns false if the obj is not a valid position object
-func board2Fen(board [13][12]int) string {
+func Board2Fen(board [13][12]int) string {
 	var fen string
 	// currentRow := 8
 
