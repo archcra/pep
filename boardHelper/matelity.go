@@ -1,6 +1,7 @@
 package boardHelper
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -20,7 +21,6 @@ func countMateScore(board [13][12]int) int {
 	var redGeneralPos, blackGeneralPos Pos
 	for i := 1; i <= 3; i++ {
 		for j := 4; j <= 6; j++ {
-			//console.log("possible black general piece is: ", board[i][ j]);
 			if board[i][j] == 254 {
 				blackGeneralPos = Pos{i, j}
 			}
@@ -40,27 +40,27 @@ func countMateScore(board [13][12]int) int {
 	for i := 1; i <= BOARD_ROWS; i++ {
 		for j := 1; j <= BOARD_COLUMNS; j++ {
 			piece = board[i][j]
-
+			// fmt.Printf("Now piece is %d and i;j is:%d;%d", piece, i, j)
 			thisPieceStr := pieceStr[piece]
 			if matablePiece[thisPieceStr] == 0 {
 				continue // Skip this piece
 			}
 			if piece < COLOR {
-				distance = int(math.Abs(float64(i - blackGeneralPos.row + j - blackGeneralPos.col)))
+				distance = int(math.Abs(float64(i-blackGeneralPos.row)) +
+					math.Abs(float64(j-blackGeneralPos.col)))
 			} else {
-				distance = int(math.Abs(float64(i - redGeneralPos.row + j - redGeneralPos.col)))
+				distance = int(math.Abs(float64(i-redGeneralPos.row)) +
+					math.Abs(float64(j-redGeneralPos.col)))
 			}
 
 			switch true {
 			case thisPieceStr == "C":
 				cannonBonusFactor = getCannonBous(board, Pos{i, j}, blackGeneralPos)
 				distance = 1 // distance is irrelevant
-				//console.log('cannonBonusFactor is', cannonBonusFactor);
 
 			case thisPieceStr == "c":
 				cannonBonusFactor = getCannonBous(board, Pos{i, j}, redGeneralPos)
-				distance = 1
-				//console.log('cannonBonusFactor is', cannonBonusFactor);
+				distance = 1 // TODO
 
 			default:
 				cannonBonusFactor = 1
@@ -70,10 +70,12 @@ func countMateScore(board [13][12]int) int {
 			if pieceValue > COLOR {
 				pieceValue = -(pieceValue - COLOR)
 			}
-			score = score + pieceValue/distance*cannonBonusFactor
-			//console.log('piece, mateWeight, distance, score', piece, PIECE_MATE_WEIGHT[piece], distance, PIECE_MATE_WEIGHT[piece] * cannonBonusFactor / distance);
-		}
 
+			if cannonBonusFactor == 0 {
+				fmt.Println("cannonBonusFactor is ZERO???") // TODO
+			}
+			score = score + pieceValue/distance*cannonBonusFactor
+		}
 	}
 
 	return score // Distance near is good.

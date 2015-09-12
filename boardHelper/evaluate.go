@@ -21,7 +21,7 @@ func positionScore(board [13][12]int) int {
 	return mobility + matelity
 }
 
-func evaluate(board [13][12]int) int {
+func Evaluate(board [13][12]int) int {
 	pieceScore := BoardPiecesScore(board)
 	posScore := positionScore(board)
 

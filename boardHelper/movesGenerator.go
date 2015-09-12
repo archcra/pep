@@ -5,11 +5,11 @@ import (
 )
 
 type MoveResult struct {
-	move  string
-	board [13][12]int
+	Move  string
+	Board [13][12]int
 }
 
-func generate(board [13][12]int, roundColor int) []MoveResult {
+func Generate(board [13][12]int, roundColor int) []MoveResult {
 	// roundColor = 1 if red, roundColor = -1 if black
 	//   // move should be in the form of "a8-87"(ma er jin san)
 	var moves []MoveResult

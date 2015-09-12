@@ -20,16 +20,17 @@ const (
 	RIVER     = 5
 	RP_MARGIN = 2 //RP_MARGIN: River to Palace's margin
 	COLOR     = 128
+	LIMBO     = 128
 )
 
 var pieceValue = map[string]int{
-	"r": COLOR + ROOK,
-	"h": COLOR + HORSE,
-	"e": COLOR + ELEPHANT,
-	"a": COLOR + ADVISOR,
-	"g": COLOR + GENERAL,
-	"c": COLOR + CANNON,
-	"s": COLOR + SOLDIER,
+	"r": LIMBO + ROOK,
+	"h": LIMBO + HORSE,
+	"e": LIMBO + ELEPHANT,
+	"a": LIMBO + ADVISOR,
+	"g": LIMBO + GENERAL,
+	"c": LIMBO + CANNON,
+	"s": LIMBO + SOLDIER,
 	"R": ROOK,
 	"H": HORSE,
 	"E": ELEPHANT,
@@ -40,20 +41,20 @@ var pieceValue = map[string]int{
 }
 
 var pieceStr = map[int]string{
-	208:   "r",
-	158:   "h",
-	140:   "e",
-	139:   "a",
-	254:   "g",
-	163:   "c",
-	143:   "s",
-	80:    "R",
-	HORSE: "H",
-	12:    "E",
-	11:    "A",
-	126:   "G",
-	35:    "C",
-	15:    "S",
+	ROOK + LIMBO:     "r",
+	HORSE + LIMBO:    "h",
+	ELEPHANT + LIMBO: "e",
+	ADVISOR + LIMBO:  "a",
+	GENERAL + LIMBO:  "g",
+	CANNON + LIMBO:   "c",
+	SOLDIER + LIMBO:  "s",
+	ROOK:             "R",
+	HORSE:            "H",
+	ELEPHANT:         "E",
+	ADVISOR:          "A",
+	GENERAL:          "G",
+	CANNON:           "C",
+	SOLDIER:          "S",
 }
 
 var pieceScore = map[string]int{
@@ -84,7 +85,7 @@ func InitFullBoard() [13][12]int { // https://groups.google.com/forum/#!topic/go
 		{-1, 15, 0, 15, 0, 15, 0, 15, 0, 15, -1, -1},
 		{-1, 0, 35, 0, 0, 0, 0, 0, 35, 0, -1, -1},
 		{-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1},
-		{-1, 80, 30, 12, 11, 126, 11, 12, 30, 80, -1, -1},
+		{-1, ROOK, HORSE, 12, 11, 126, 11, 12, HORSE, ROOK, -1, -1},
 		{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 		{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}}
 	return board

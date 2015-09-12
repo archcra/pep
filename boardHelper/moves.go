@@ -1,9 +1,9 @@
 package boardHelper
 
-import (
-	"fmt"
-	// "math"
-)
+import "fmt"
+
+//"fmt"
+// "math"
 
 type Pos struct {
 	row int
@@ -82,7 +82,9 @@ const (
 
 func validPos(board [13][12]int, row int, column int, isRedFlag int) bool {
 	result := false
-
+	if row < 0 || row > 10 || column < 0 || column > 9 {
+		return false
+	}
 	if board[row][column] == 0 ||
 		(board[row][column] > 0 && isRedFlag*(COLOR-board[row][column]) < 0) {
 		//Empty or the other side, a taken)){

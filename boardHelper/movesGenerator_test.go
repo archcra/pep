@@ -20,11 +20,11 @@ func TestGenerateMoves(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := generate(Fen2Board(c.fen), c.roundColor)
+		got := Generate(Fen2Board(c.fen), c.roundColor)
 
 		found := false
 		for _, v := range got {
-			if v.move == c.want {
+			if v.Move == c.want {
 				found = true
 			}
 		}
@@ -37,7 +37,7 @@ func TestGenerateMoves(t *testing.T) {
 func extractMoveStr(moveResult []MoveResult) string {
 	var result string
 	for _, v := range moveResult {
-		result = result + v.move + ";"
+		result = result + v.Move + ";"
 	}
 	return result
 }
