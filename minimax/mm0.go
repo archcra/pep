@@ -1,10 +1,6 @@
 package minimax
 
-import (
-	"fmt"
-
-	"github.com/archcra/pep/boardHelper"
-)
+import "github.com/archcra/pep/boardHelper"
 
 type TreeNode struct {
 	Parent     *TreeNode //走到这个局面的上一局面
@@ -69,7 +65,7 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	for _, node := range nodes {
 		// 如果此展开的节点已吃了对方老帅，则直接返回
 		if boardHelper.GeneralBeTaken(node.Board, node.RoundColor) {
-			fmt.Printf("Now taken")
+			//fmt.Printf("Now taken")
 			return &node
 		}
 
@@ -97,11 +93,11 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	// 如果没有可展开结点，即被完全憋死了（如3aga3/3ShS3/4S4/9/9/9/9/9/9/4G4，如轮到黑，则完全没有可走之步)
 	//另一局，7子： (9/3ShS3/3aga3/9/9/9/9/9/9/3G5) // TODO
 	//maxNode.Parent.Score = maxNode.Score
-	if depth == depthLimit {
-		return &maxNode
+	if depth == 1 {
+		return maxNode.Parent
 	} else {
 		//fmt.Printf("\n\n\nSHOULD RETURN HERE ....%s and %s and %d and maxScore is %d\n\n", maxNode.Move, maxNode.Parent.Move, maxNode.Score, maxScore)
-		return maxNode.Parent
+		return &maxNode
 	}
 
 }
@@ -141,9 +137,9 @@ func min(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	//	minNode.Parent.Score = minNode.Score
 	//fmt.Printf("min node move is %s and score is %d.", minNode.Move, minNode.Score)
 
-	if depth == depthLimit {
-		return &minNode
-	} else {
-		return minNode.Parent
-	}
+	//if depth == depthLimit {
+	return &minNode
+	//} else {
+	//	return minNode.Parent
+	//}
 }
