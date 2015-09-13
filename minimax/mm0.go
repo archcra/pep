@@ -1,37 +1,12 @@
 package minimax
 
+// 这个算法很慢，最多2回合(search level 4)，耗时已到分钟级别
+// 而且，这个无法解决吃马的问题，即第一步如不知对方马，也会被对方吃另一马；而如果只
+// 查询一个回合，则是个无解的问题；而且，这个的机动性(mobility)的权重不好，导致
+// 走子比防止丢子重要
+// 不过，将作为，如“有来有去”　的级别AI保留
+
 import "github.com/archcra/pep/boardHelper"
-
-type TreeNode struct {
-	Parent     *TreeNode //走到这个局面的上一局面
-	Move       string    //走到这个局面的招法
-	Board      [13][12]int
-	Score      int //评分
-	RoundColor int //当前局面该走的颜色
-}
-
-const (
-	SCORE_WIN_LIMIT = 100000
-)
-
-func expandNode(node TreeNode, nextRoundColor int) []TreeNode {
-	/*
-	   A node is as this:
-	   {move:"10:9-9:9", board:[...], RoundColor:RED}
-	*/
-	var treeNodes []TreeNode
-	var newNode TreeNode
-
-	newNodes := boardHelper.Generate(node.Board, nextRoundColor)
-	for _, item := range newNodes {
-		newNode = TreeNode{
-			&node, item.Move, item.Board, 0, nextRoundColor,
-		}
-		treeNodes = append(treeNodes, newNode)
-
-	}
-	return treeNodes
-}
 
 func Minimax(board [13][12]int, depthLimit int, roundColor int) *TreeNode {
 
@@ -65,7 +40,6 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	for _, node := range nodes {
 		// 如果此展开的节点已吃了对方老帅，则直接返回
 		if boardHelper.GeneralBeTaken(node.Board, node.RoundColor) {
-			//fmt.Printf("Now taken")
 			return &node
 		}
 
