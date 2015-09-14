@@ -73,9 +73,8 @@ func maxCc(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNod
 		//maxScore, maxNode.Move, len(minNodes), len(nodes), depth)
 		nodes[0].Score = -SCORE_WIN_LIMIT
 		return &nodes[0] // TODO，如果nodes的长度为0，如何处理？
-	} else {
-		return maxNode.Parent
 	}
+	return maxNode.Parent
 }
 
 func minCc(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode {

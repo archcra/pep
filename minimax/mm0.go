@@ -69,11 +69,8 @@ func max(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode 
 	//maxNode.Parent.Score = maxNode.Score
 	if depth == 1 {
 		return maxNode.Parent
-	} else {
-		//fmt.Printf("\n\n\nSHOULD RETURN HERE ....%s and %s and %d and maxScore is %d\n\n", maxNode.Move, maxNode.Parent.Move, maxNode.Score, maxScore)
-		return &maxNode
 	}
-
+	return &maxNode
 }
 
 func min(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNode {
