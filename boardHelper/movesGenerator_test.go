@@ -4,6 +4,7 @@
 package boardHelper
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -28,6 +29,8 @@ func TestGenerateMoves(t *testing.T) {
 
 		found := false
 		for _, v := range got {
+			fmt.Printf("move is %s with length: %d", v.Move, len(v.Move))
+
 			if v.Move == c.want {
 				found = true
 			}

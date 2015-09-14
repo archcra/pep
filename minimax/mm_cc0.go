@@ -48,7 +48,7 @@ func maxCc(nodes []TreeNode, depth int, depthLimit int, roundColor int) *TreeNod
 			// 如果展开的节点不带将，将忽略此节点，不再展开
 			if rivalUnderCheck(node, node.RoundColor) && depth != depthLimit {
 				//fmt.Print("\n---->rival under check with move: %s \n", node.Move)
-				minNodes = append(minNodes, *minCc(expandNode(node, roundColor*-1), depth+1, depthLimit, roundColor))
+				minNodes = append(minNodes, *minCc(expandNode(node, -roundColor), depth+1, depthLimit, roundColor))
 			}
 		}
 	}

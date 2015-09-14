@@ -1,7 +1,5 @@
 package boardHelper
 
-import "fmt"
-
 //"fmt"
 // "math"
 
@@ -373,7 +371,7 @@ func getPossibleMovesInfo(board [13][12]int, row int, column int) MoveInfo {
 	}
 	pieceFun := pieceFuns[movesInfo.piece]
 	if pieceFun == nil {
-		fmt.Printf("No valid piece of value %d on this position %d:%d of board %q.", movesInfo.piece, row, column, board)
+		//fmt.Printf("No valid piece of value %d on this position %d:%d of board %q.", movesInfo.piece, row, column, board)
 		return movesInfo
 	}
 	movesInfo.moves = pieceFun(board, row, column, movesInfo.pieceColor)
