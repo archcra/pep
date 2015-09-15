@@ -1,13 +1,16 @@
 package boardHelper
 
-import (
-	"bytes"
-	"strconv"
-)
+import "strconv"
 
 type MoveResult struct {
 	Move  string
 	Board [13][12]int
+}
+
+var buffer []byte
+
+func init() {
+	buffer = make([]byte, 7) // Max: 10:9-10:8
 }
 
 func Generate(board [13][12]int, roundColor int) []MoveResult {
@@ -32,16 +35,16 @@ func Generate(board [13][12]int, roundColor int) []MoveResult {
 						changedBoard[movesInfo.moves[k].row][movesInfo.moves[k].col] = board[i][j] //move the piece
 						changedBoard[i][j] = 0
 						// clear the original piece
-						buffer := make([]byte, 10) // Max: 10:9-10:8
+
 						bl := 0
-						bl += copy(buffer[bl:], strconv.Itoa(i))
+						bl += copy(buffer[bl:], strconv.FormatInt(int64(i), 16))
 						bl += copy(buffer[bl:], ":")
 						bl += copy(buffer[bl:], strconv.Itoa(j))
 						bl += copy(buffer[bl:], "-")
-						bl += copy(buffer[bl:], strconv.Itoa(movesInfo.moves[k].row))
+						bl += copy(buffer[bl:], strconv.FormatInt(int64(movesInfo.moves[k].row), 16))
 						bl += copy(buffer[bl:], ":")
 						bl += copy(buffer[bl:], strconv.Itoa(movesInfo.moves[k].col))
-						buffer = bytes.Trim(buffer, "\x00") // 否则字符串长度不对
+						//buffer = bytes.Trim(buffer, "\x00") // 否则字符串长度不对
 						moves = append(moves, MoveResult{string(buffer), changedBoard})
 					}
 				}

@@ -27,7 +27,7 @@ func main() {
 
 	fen := "cC7/5g1h1/3Re1R2/9/2e6/9/9/9/1hr1s4/3G1c1r1" //微信天天象棋第38关[楚]
 	roundColor := 1
-	depthLimit := 5
+	depthLimit := 3
 
 	got := minimax.MinimaxCc(fen, depthLimit, roundColor)
 

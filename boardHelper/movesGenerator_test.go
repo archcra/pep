@@ -3,10 +3,7 @@
 
 package boardHelper
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
 func TestGenerateMoves(t *testing.T) {
 	cases := []struct {
@@ -17,8 +14,8 @@ func TestGenerateMoves(t *testing.T) {
 		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", 1, "8:2-8:5"},
 		{"1heagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -1, "3:8-3:5"},
 		{"4g4/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/4C4/9/RHEAGAEHR", 1, "8:5-4:5"},
-		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -1, "3:2-10:2"},
-		{"9/4g4/9/9/9/9/9/9/9/4G4", 1, "10:5-2:5"},
+		{"rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR", -1, "3:2-a:2"},
+		{"9/4g4/9/9/9/9/9/9/9/4G4", 1, "a:5-2:5"},
 		{"4g4/4S4/9/9/9/9/9/9/9/4G4", -1, "1:5-2:5"},
 		{"3a1a3/C1H1g4/4e4/9/8C/9/9/9/4s4/3s1G3", 1, "2:1-5:1"}, //马后炮
 
@@ -29,8 +26,6 @@ func TestGenerateMoves(t *testing.T) {
 
 		found := false
 		for _, v := range got {
-			fmt.Printf("move is %s with length: %d", v.Move, len(v.Move))
-
 			if v.Move == c.want {
 				found = true
 			}
